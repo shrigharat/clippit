@@ -1,0 +1,78 @@
+<!-- Registration Form -->
+<app-alert [title]="alertTitle" [subTitle]="alertSubtitle" [show]="showAlert" [color]="alertColor"></app-alert>
+<form [formGroup]="registerForm" (ngSubmit)="submitForm()">
+  <!-- Name -->
+  <div class="mb-3">
+    <label class="inline-block mb-2">Name</label>
+    <app-input
+      [control]="registerForm.controls.name"
+      placeholder="Enter name"
+    ></app-input>
+  </div>
+
+  <!-- Email -->
+  <div class="mb-3">
+    <label class="inline-block mb-2">Email</label>
+    <app-input
+      [control]="registerForm.controls.email"
+      placeholder="Enter Email"
+      type="email"
+    ></app-input>
+  </div>
+
+  <!-- Age -->
+  <div class="mb-3">
+    <label class="inline-block mb-2">Age</label>
+    <app-input
+      type="number"
+      [control]="registerForm.controls.age"
+      placeholder="Enter your age"
+    ></app-input>
+  </div>
+
+  <!-- Password -->
+  <div class="mb-3">
+    <label class="inline-block mb-2">Password</label>
+    <app-input
+      type="password"
+      placeholder="Enter a password"
+      [control]="registerForm.controls.password"
+    ></app-input>
+  </div>
+
+  <!-- Confirm Password -->
+  <div class="mb-3">
+    <label class="inline-block mb-2">Confirm Password</label>
+    <app-input
+      [control]="registerForm.controls.confirmPassword"
+      placeholder="Confirm Password"
+      type="password"
+    ></app-input>
+  </div>
+
+  <!-- Phone Number -->
+  <div class="mb-3">
+    <label class="inline-block mb-2">Phone Number</label>
+    <app-input
+      placeholder="Enter phone number"
+      [control]="registerForm.controls.phoneNumber"
+      format="00000 00000"
+    ></app-input>
+  </div>
+
+  <button
+    type="submit"
+    class="block w-full py-1.5 px-3 rounded transition hover:bg-indigo-500"
+    [disabled]="registerForm.invalid || loading"
+    [ngClass]="{
+      'text-white': !registerForm.invalid,
+      'bg-indigo-400': !registerForm.invalid,
+      'hover:bg-indigo-500': !registerForm.invalid,
+      'text-gray-600': registerForm.invalid,
+      'bg-gray-400': registerForm.invalid
+    }"
+  >
+    <span *ngIf="!loading">Submit</span>
+    <app-ellipsis-loader *ngIf="loading"></app-ellipsis-loader>
+  </button>
+</form>

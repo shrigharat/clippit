@@ -1,0 +1,20 @@
+.alert-comp{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: .7rem 1rem;
+    color: white;
+    border-radius: 4px;
+    margin-bottom: .5rem;
+}
+
+.title {
+    font-size: 1.1rem;
+}
+
+.sub-title{
+    font-size: 0.9rem;
+    color: rgba(255,255,255, 0.9);
+}

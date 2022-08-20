@@ -1,0 +1,37 @@
+<!-- Login Form -->
+<app-alert [show]="showAlert" [color]="alertColor" [title]="alertTitle" [subTitle]="alertSubtitle" ></app-alert>
+<form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+  <!-- Email -->
+  <div class="mb-3">
+    <label class="inline-block mb-2">Email</label>
+    <app-input
+      placeholder="Enter email"
+      [control]="loginForm.controls.email"
+    ></app-input>
+  </div>
+  <!-- Password -->
+  <div class="mb-3">
+    <label class="inline-block mb-2">Password</label>
+    <app-input
+      placeholder="Enter password"
+      [control]="loginForm.controls.password"
+      type="password"
+    ></app-input>
+  </div>
+  <button
+    type="submit"
+    class="block w-full py-1.5 px-3 rounded transition hover:bg-indigo-500"
+    [ngClass]="{
+      'bg-indigo-400': !loginForm.invalid,
+      'text-white': !loginForm.invalid,
+      'bg-gray-600': loginForm.invalid,
+      'text-gray-400': loginForm.invalid
+    }"
+    [disabled]="loginForm.invalid || loading"
+  >
+    <span *ngIf="!loading; else loader">Submit</span>
+    <ng-template #loader>
+      <app-ellipsis-loader></app-ellipsis-loader>
+    </ng-template>
+  </button>
+</form>

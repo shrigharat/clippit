@@ -1,0 +1,112 @@
+<!-- Main Content -->
+<section class="container mx-auto my-8 bg-secondary p-6">
+  <div class="rounded relative flex flex-col">
+    <div class="font-bold mb-6">Upload Video</div>
+
+    <ng-container *ngIf="!ffmpegService.isReady; else uploadVideoForm">
+      <span class="flex justify-center align-center">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          class="animate-spin"
+          fill="#efebe6"
+        >
+          <path
+            d="M15.566 11.021A7.016 7.016 0 0 0 19 5V4h1V2H4v2h1v1a7.016 7.016 0 0 0 3.434 6.021c.354.208.566.545.566.9v.158c0 .354-.212.69-.566.9A7.016 7.016 0 0 0 5 19v1H4v2h16v-2h-1v-1a7.014 7.014 0 0 0-3.433-6.02c-.355-.21-.567-.547-.567-.901v-.158c0-.355.212-.692.566-.9zM17 19v1H7v-1a5.01 5.01 0 0 1 2.45-4.299A3.111 3.111 0 0 0 10.834 13h2.332c.23.691.704 1.3 1.385 1.702A5.008 5.008 0 0 1 17 19z"
+          ></path>
+        </svg>
+      </span>
+    </ng-container>
+
+    <!-- Upload Dropbox -->
+    <ng-template #uploadVideoForm>
+      <ng-container *ngIf="file === null; else step2">
+        <div
+          app-event-blocker
+          (dragend)="isDragOver = false"
+          (dragenter)="isDragOver = true"
+          (dragleave)="isDragOver = false"
+          (dragover)="isDragOver = true"
+          (mouseleave)="isDragOver = false"
+          (drop)="storeFile($event)"
+          [ngClass]="{
+            'bg-indigo-400 border-indigo-400 border-solid': isDragOver
+          }"
+          class="w-full px-10 py-40 rounded text-center cursor-pointer border border-dashed border-gray-400 transition duration-500 hover:text-white hover:bg-indigo-400 hover:border-indigo-400 hover:border-solid text-xl"
+        >
+          <h5>Drop your file here (mp4 only!)</h5>
+        </div>
+        <input
+          type="file"
+          class="mt-4"
+          (change)="storeFile($event)"
+          accept=".mp4"
+        />
+      </ng-container>
+
+      <!-- Video Editor -->
+      <ng-template #step2>
+        <app-alert
+          [show]="showAlert"
+          [color]="alertColor"
+          [title]="alertTitle"
+          [subTitle]="(percentage + '' | percent)?.toString()"
+        ></app-alert>
+        <div>
+          <!-- Form -->
+          <form [formGroup]="uploadForm" (ngSubmit)="uploadVideo()">
+            <!-- Screenshots -->
+            <h2 class="mb-4 text-xl">Select a Thumbnail</h2>
+            <div *ngIf="ffmpegService.isRunning" class="flex justify-center align-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="#EFEBE6"
+                class="animate-spin"
+              >
+                <path
+                  d="M15.566 11.021A7.016 7.016 0 0 0 19 5V4h1V2H4v2h1v1a7.016 7.016 0 0 0 3.434 6.021c.354.208.566.545.566.9v.158c0 .354-.212.69-.566.9A7.016 7.016 0 0 0 5 19v1H4v2h16v-2h-1v-1a7.014 7.014 0 0 0-3.433-6.02c-.355-.21-.567-.547-.567-.901v-.158c0-.355.212-.692.566-.9zM17 19v1H7v-1a5.01 5.01 0 0 1 2.45-4.299A3.111 3.111 0 0 0 10.834 13h2.332c.23.691.704 1.3 1.385 1.702A5.008 5.008 0 0 1 17 19z"
+                ></path>
+              </svg>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              <div
+                class="border-8 cursor-pointer"
+                *ngFor="let image of screenshots; index as i"
+                [ngClass]="{'border-green-400': selectedScreenshot === i}"
+                (click)="selectedScreenshot=i"
+              >
+                <img [src]="image | safeUrl" />
+              </div>
+            </div>
+
+            <!-- Title -->
+            <div class="mt-4">
+              <label class="block text-xl mb-4">Title</label>
+              <app-input
+                [control]="title"
+                placeholder="Enter Title"
+              ></app-input>
+            </div>
+
+            <div class="mt-4 text-right">
+              <button
+                type="submit"
+                [disabled]="inSubmission"
+                [ngClass]="{
+                  'opacity-50': inSubmission,
+                  'hover:bg-indigo-500': !inSubmission
+                }"
+                class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none"
+              >
+                Publish
+              </button>
+            </div>
+          </form>
+        </div>
+      </ng-template>
+    </ng-template>
+  </div>
+</section>

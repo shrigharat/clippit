@@ -1,0 +1,15 @@
+<ul class="flex flex-wrap mb-4">
+  <li *ngFor="let tab of tabs" class="flex-auto text-center">
+    <a
+      class="block rounded py-3 px-4 transition hover:text-white"
+      href="#"
+      [ngClass]="{
+        'text-white': activeTab?.tabTitle === tab.tabTitle,
+        'bg-indigo-400': activeTab?.tabTitle === tab.tabTitle
+      }"
+      (click)="setActiveTab(tab)"
+      >{{ tab.tabTitle }}</a
+    >
+  </li>
+</ul>
+<ng-content></ng-content>
